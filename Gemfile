@@ -36,12 +36,12 @@ gem 'dotenv-rails'
 gem 'autoprefixer-rails', group: :production
 
 gem 'kaminari'
-gem 'rails-i18n', '~> 5.0.0'
 
 gem 'mini_magick'
 gem 'carrierwave'
 gem 'carrierwave-bombshelter'
 
+gem 'biovision-base', git: 'https://github.com/Biovision/biovision-base.git'
 gem 'track', git: 'https://github.com/Biovision/track.git'
 
 group :development, :test do

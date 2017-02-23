@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201230746) do
+ActiveRecord::Schema.define(version: 20170202211826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,44 @@ ActiveRecord::Schema.define(version: 20170201230746) do
     t.string   "description",                 default: "",    null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.integer  "agent_id"
+    t.inet     "ip"
+    t.boolean  "super_user",                default: false, null: false
+    t.boolean  "allow_login",               default: true,  null: false
+    t.boolean  "hide_profile",              default: false, null: false
+    t.boolean  "email_confirmed",           default: false, null: false
+    t.boolean  "phone_confirmed",           default: false, null: false
+    t.boolean  "allow_mail",                default: true,  null: false
+    t.boolean  "bot",                       default: false, null: false
+    t.date     "birthday"
+    t.datetime "last_seen"
+    t.integer  "gender",          limit: 2
+    t.integer  "inviter_id"
+    t.integer  "invitee_count",             default: 0,     null: false
+    t.integer  "max_depth",       limit: 2, default: 16,    null: false
+    t.integer  "fractals_count",            default: 0,     null: false
+    t.integer  "words_count",               default: 0,     null: false
+    t.integer  "follower_count",            default: 0,     null: false
+    t.integer  "followee_count",            default: 0,     null: false
+    t.string   "slug",                                      null: false
+    t.string   "screen_name",                               null: false
+    t.string   "email",                                     null: false
+    t.string   "password_digest"
+    t.string   "name"
+    t.string   "phone"
+    t.string   "image"
+    t.string   "notice"
+    t.index ["agent_id"], name: "index_users_on_agent_id", using: :btree
+    t.index ["email"], name: "index_users_on_email", using: :btree
+    t.index ["screen_name"], name: "index_users_on_screen_name", using: :btree
+    t.index ["slug"], name: "index_users_on_slug", unique: true, using: :btree
+  end
+
   add_foreign_key "agents", "browsers"
   add_foreign_key "metric_values", "metrics"
+  add_foreign_key "users", "agents"
+  add_foreign_key "users", "users", column: "inviter_id", on_update: :cascade, on_delete: :nullify
 end
