@@ -11,6 +11,7 @@ class User < ApplicationRecord
   mount_uploader :image, AvatarUploader
 
   belongs_to :agent, optional: true
+  has_many :tokens, dependent: :delete_all
 
   before_save { self.slug = screen_name.downcase unless screen_name.nil? }
 

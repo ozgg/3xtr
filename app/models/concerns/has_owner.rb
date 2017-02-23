@@ -2,7 +2,7 @@ module HasOwner
   extend ActiveSupport::Concern
 
   included do
-    scope :owned_by, ->(user) { where user: user }
+    scope :owned_by, ->(user) { where(user: user) }
   end
 
   # @param [User] user
@@ -12,7 +12,7 @@ module HasOwner
 
   def owner_name
     if user.is_a? User
-      user.profile_name
+      user.screen_name
     else
       I18n.t(:anonymous)
     end

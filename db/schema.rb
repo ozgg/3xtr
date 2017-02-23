@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170202211826) do
+ActiveRecord::Schema.define(version: 20170223224344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,21 @@ ActiveRecord::Schema.define(version: 20170202211826) do
     t.string   "description",                 default: "",    null: false
   end
 
+  create_table "tokens", force: :cascade do |t|
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "user_id",                   null: false
+    t.integer  "agent_id"
+    t.inet     "ip"
+    t.datetime "last_used"
+    t.boolean  "active",     default: true, null: false
+    t.string   "token"
+    t.index ["agent_id"], name: "index_tokens_on_agent_id", using: :btree
+    t.index ["last_used"], name: "index_tokens_on_last_used", using: :btree
+    t.index ["token"], name: "index_tokens_on_token", unique: true, using: :btree
+    t.index ["user_id"], name: "index_tokens_on_user_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
@@ -100,6 +115,8 @@ ActiveRecord::Schema.define(version: 20170202211826) do
 
   add_foreign_key "agents", "browsers"
   add_foreign_key "metric_values", "metrics"
+  add_foreign_key "tokens", "agents"
+  add_foreign_key "tokens", "users"
   add_foreign_key "users", "agents"
   add_foreign_key "users", "users", column: "inviter_id", on_update: :cascade, on_delete: :nullify
 end
