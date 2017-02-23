@@ -28,6 +28,8 @@ module Trickster
       config.autoload_paths << config.root.join(path).to_s
     end
 
+    config.active_job.queue_adapter = :sidekiq
+
     config.assets.precompile << %w(biovision/base/**/*)
   end
 end

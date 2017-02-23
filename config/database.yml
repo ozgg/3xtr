@@ -23,5 +23,5 @@ production:
   <<: *default
   database: trickster
   username: trickster
-  password: <%= ENV['TRICKSTER_DATABASE_PASSWORD'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
   host: localhost
