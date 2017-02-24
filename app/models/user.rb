@@ -11,7 +11,10 @@ class User < ApplicationRecord
   mount_uploader :image, AvatarUploader
 
   belongs_to :agent, optional: true
+  belongs_to :inviter, class_name: User.to_s, optional: true
+  has_many :invitees, class_name: User.to_s, foreign_key: :inviter_id, dependent: :nullify
   has_many :tokens, dependent: :delete_all
+  has_many :codes, dependent: :delete_all
 
   before_save { self.slug = screen_name.downcase unless screen_name.nil? }
 

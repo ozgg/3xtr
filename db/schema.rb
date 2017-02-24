@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170223224344) do
+ActiveRecord::Schema.define(version: 20170224002137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,21 @@ ActiveRecord::Schema.define(version: 20170223224344) do
     t.boolean  "deleted",      default: false, null: false
     t.integer  "agents_count", default: 0,     null: false
     t.string   "name",                         null: false
+  end
+
+  create_table "codes", force: :cascade do |t|
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "user_id"
+    t.integer  "agent_id"
+    t.inet     "ip"
+    t.integer  "category",   limit: 2,             null: false
+    t.integer  "quantity",   limit: 2, default: 1, null: false
+    t.string   "body",                             null: false
+    t.string   "payload"
+    t.index ["agent_id"], name: "index_codes_on_agent_id", using: :btree
+    t.index ["body", "category", "quantity"], name: "index_codes_on_body_and_category_and_quantity", using: :btree
+    t.index ["user_id"], name: "index_codes_on_user_id", using: :btree
   end
 
   create_table "metric_values", force: :cascade do |t|
@@ -114,6 +129,8 @@ ActiveRecord::Schema.define(version: 20170223224344) do
   end
 
   add_foreign_key "agents", "browsers"
+  add_foreign_key "codes", "agents"
+  add_foreign_key "codes", "users"
   add_foreign_key "metric_values", "metrics"
   add_foreign_key "tokens", "agents"
   add_foreign_key "tokens", "users"

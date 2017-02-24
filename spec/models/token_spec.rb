@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Token, type: :model, focus: true do
+RSpec.describe Token, type: :model do
   subject { build :token }
 
   it_behaves_like 'has_valid_factory'
